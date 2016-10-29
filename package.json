@@ -1,0 +1,28 @@
+{
+  "name": "battalion-bot",
+  "version": "1.0.0",
+  "description": "slack bot for the battalion hockey team in Oakland, CA",
+  "main": "index.js",
+  "scripts": {
+    "cp": "cp -r node_modules src/",
+    "zip": "zip -r src.zip src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevengill/battalion-bot.git"
+  },
+  "keywords": [
+    "slack",
+    "bot",
+    "slackbot"
+  ],
+  "author": "Steve Gill",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevengill/battalion-bot/issues"
+  },
+  "homepage": "https://github.com/stevengill/battalion-bot#readme",
+  "dependencies": {
+    "aws-sdk": "^2.6.12"
+  }
+}
