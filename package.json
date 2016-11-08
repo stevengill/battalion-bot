@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/stevengill/battalion-bot#readme",
   "dependencies": {
-    "aws-sdk": "^2.6.12"
+    "cheerio": "^0.22.0",
+    "request": "^2.78.0",
+    "webshot": "^0.18.0"
   }
 }
