@@ -46,11 +46,15 @@ const qs = require('querystring');
 const request = require('request');
 const cheerio = require('cheerio');
 const webshot = require('webshot');
-const s3 = new AWS.S3();
+const imgur = require('imgur');
+const config = require('./config.json');
+const shelljs = require('shelljs');
 
+imgur.setClientId(config['imgur']['clientID']);
 const kmsEncryptedToken = 'AQECAHhgNvpiumqxJ3vR4djEGsVfTsD1D/nsXmo42tKbnHcu2gAAAHYwdAYJKoZIhvcNAQcGoGcwZQIBADBgBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDNLxa93cWGQhwS2O4gIBEIAzuF1tczZDyCq9Nqe/LxlCsibmAKQfUWOAM41LfDZrC8E7Z8kd5qqXU+ICTzM9IpBCA92P';
 let token;
 
+var rurl;
 
 function processEvent(event, callback) {
     const params = qs.parse(event.body);
@@ -69,10 +73,24 @@ function processEvent(event, callback) {
     
     
     
-    callback(null, {"text":`${user} invoked ${command} in ${channel} with the following text: ${commandText}`, "response_type": "in_channel"});
+    callback(null, {"text":`${user} invoked ${command} in ${channel} with the following text: ${commandText}`});
     }
 
 function scrape(command, resURL) {
+    
+    resURL = rurl;
+    console.log('res: ' + resURL)
+    
+
+    //execute('npm -v');
+    console.log('pre npm install')
+    shelljs.exec('npm install', function(code, stdout, stderr) {
+        console.log('Exit code:', code);
+        console.log('Program output:', stdout);
+        console.log('Program stderr:', stderr);
+    }); 
+    console.log('here');
+
     const teamUrl = 'http://stats.siahl.org/display-schedule.php?team=3058&season=37&tlev=0&tseq=0&league=27';
 
     /*webshot(teamUrl, 'teamstats.png', function(err) {
@@ -105,7 +123,14 @@ function scrape(command, resURL) {
             };
 
             webshot(playerStatsHTML, 'teamstats.png', options,  function(err) {
-                slackResponse
+                imgur.uploadFile('teamstats.png')
+                .then(function(json) {
+                    console.log(json.data.link);
+                    return slackResponse(resURL, json.data.link);
+                })
+                .catch(function (err1) {
+                    console.log(err1.message);
+                });
                 console.log(err);
                 console.log('done');
             });
@@ -127,26 +152,58 @@ function scrape(command, resURL) {
    
 }
 
-function slackResponse(resURL, attachment) {
+function slackResponse(resURL, attachmentURL) {
+    console.log(slackResponse);
     let options = {
         url: resURL,
         json: {
             "text": "this is the text",
-		    "response_type": "in_channel"
+		    "response_type": "in_channel",
+            "attachments": [ 
+                {
+                    "image_url": attachmentURL
+                }
+            ]
         }
     };
+    //var p = new Promise();
     request.post(options, function(error, response, body) {
+        if (error) {
+            console.log(error);
+            throw new Error(error);            
+        } 
         console.log('in post callback');
         console.log(response.statusCode, body);
-    });
+        return(response.statusCode); 
+    }); 
+
     console.log(options);
 
-	console.log(command, resURL);
+	//console.log(command, resURL);
 }
+
+function execute(command, callback){
+    console.log(command);
+    shelljs.exec(command, function(error, stdout, stderr){
+
+        console.log(error)
+        console.log('here');
+        console.log(stdout); });
+};
 
 module.exports.slackResponse = slackResponse;
 module.exports.scrape = scrape;
 exports.handler = (event, context, callback) => {
+    console.log('event');
+    console.log(event)
+
+    
+    console.log('context');
+    console.log(context)
+
+    console.log('callback:')
+    console.log(callback.toString());
+
     const params = qs.parse(event.body);
     const done = (err, res) => callback(null, {
         statusCode: err ? '400' : '200',
@@ -154,12 +211,35 @@ exports.handler = (event, context, callback) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    });
+    }, false);
+    
+    rurl = params.response_url;
 
+    done(null, {"text":`sending the response`});
+    
+    console.log(params);
+        let options = {
+        url: params.response_url,
+        json: {
+            "text": "this is the text"
+        }
+    };
+    console.log(options);
+    /*
+    request.post(options, function(error, response, body) {
+        if (error) {
+            console.log(error);
+            throw new Error(error);            
+        } 
+        console.log('in post callback');
+        console.log(response.statusCode, body);
+        return(response.statusCode); 
+    }); */
+/*
     if (token) {
         // Container reuse, simply process the event with the key in memory
-        processEvent(event, done);
-        scrape(params.command, params.response_url)
+        //processEvent(event, done);
+       //scrape(params.command, params.response_url)
     } else if (kmsEncryptedToken && kmsEncryptedToken !== '<kmsEncryptedToken>') {
         const cipherText = { CiphertextBlob: new Buffer(kmsEncryptedToken, 'base64') };
         const kms = new AWS.KMS();
@@ -170,10 +250,14 @@ exports.handler = (event, context, callback) => {
             }
             token = data.Plaintext.toString('ascii');
             
-            processEvent(event, done);
-            scrape(params.command, params.response_url)
+            //processEvent(event, done);
+            //scrape(params.command, params.response_url)
         });
     } else {
         done('Token has not been set.');
     }
+*/
 };
+
+setTimeout(scrape, 2000);
+//scrape();

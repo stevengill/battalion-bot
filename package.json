@@ -4,7 +4,7 @@
   "description": "slack bot for the battalion hockey team in Oakland, CA",
   "main": "index.js",
   "scripts": {
-    "cp": "cp -r node_modules src/",
+    "cp": "rm -rf node_modules && npm install --prod && cp -r node_modules src/",
     "zip": "zip -r src.zip src",
     "test": "node test.js"
   },
@@ -25,7 +25,13 @@
   "homepage": "https://github.com/stevengill/battalion-bot#readme",
   "dependencies": {
     "cheerio": "^0.22.0",
+    "imgur": "^0.1.7",
     "request": "^2.78.0",
-    "webshot": "^0.18.0"
+    "shelljs": "^0.7.5"
+    
+  },
+  "devDependencies": {
+    "webshot": "^0.18.0",
+    "aws-sdk": "^2.7.0"
   }
 }
