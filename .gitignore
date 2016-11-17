@@ -37,3 +37,5 @@ jspm_packages
 .node_repl_history
 
 src.zip
+config.json
+result.png

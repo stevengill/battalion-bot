@@ -1,0 +1,8 @@
+{
+    "imgur": {
+        "clientID": "Your imgur clientID"
+    },
+    "slack": {
+        "token": "Your custom slash slack command token"
+    }
+}

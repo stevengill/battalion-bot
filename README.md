@@ -1,2 +1,21 @@
 # battalion-bot
 slackbot for my ice hockey team
+
+Takes screen shots of various team stats tables, uploads them to imgur and shares the link on our team slack.
+
+## setup
+
+Rename `config-sample.json` to `config.json` and add your variables. 
+
+### Imgur
+
+Imgur, [register your app](https://api.imgur.com/oauth2/addclient) and get the `clientID`. `Anonymous usage without user authorization` is all we need for uploading to imgur. Add your `clientID` to `config.json`
+
+### Slack
+
+Go to https://.slack.com/services/new/slash-commands and create a new slash command
+
+
+
+
+
