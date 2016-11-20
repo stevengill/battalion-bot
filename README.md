@@ -15,7 +15,21 @@ Imgur, [register your app](https://api.imgur.com/oauth2/addclient) and get the `
 
 Go to https://.slack.com/services/new/slash-commands and create a new slash command
 
+## Deploying
 
+## Deployint Locally
+
+### local tunnel
+
+Create a local tunnel to connect to your custom slack integration. 
+```lt --port 8765 --subdomain mybot```
+
+Feel free to replace `mybot` with a custom unqiue name. 
+
+Copy the url that the command above gives you and post it to your slack slash integration settings url field.
+
+Add the url from the 
+Run `npm start` 
 
 
 

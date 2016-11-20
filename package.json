@@ -4,7 +4,8 @@
   "description": "slack bot for the battalion hockey team in Oakland, CA",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "start": "node lib/index.js"
   },
   "repository": {
     "type": "git",
