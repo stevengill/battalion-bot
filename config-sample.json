@@ -1,8 +1,12 @@
 {
     "imgur": {
-        "clientID": "Your imgur clientID"
+        "clientID": "CLIENTID"
     },
     "slack": {
-        "token": "Your custom slash slack command token"
+        "token": "SLACKTOKEN"
+    },
+    "teamInfo": {
+        "stats": "http://stats.siahl.org/display-schedule.php?team=3058&season=37&tlev=0&tseq=0&league=27",
+        "standings": "http://stats.siahl.org/display-stats.php?league=27" 
     }
 }
