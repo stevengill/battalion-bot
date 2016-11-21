@@ -17,7 +17,7 @@ Go to https://.slack.com/services/new/slash-commands and create a new slash comm
 
 ## Deploying
 
-## Deployint Locally
+## Deploying Locally
 
 ### local tunnel
 
@@ -32,4 +32,11 @@ Add the url from the
 Run `npm start` 
 
 
+### Deploying Remotely
 
+I followed: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04
+
+
+## Resources
+
+I followed this guide: https://medium.com/slack-developer-blog/easy-peasy-slash-commands-getting-started-c37ff3f14d3e#.le1h4yqza
